@@ -1,11 +1,12 @@
 import csv
 
 def extractitemsfromknownList(csvlist):
-    with open (csvlist) as KnownList:
+    lines = list()
+    with open (csvlist, newline='') as KnownList:
         items = csv.reader(KnownList, delimiter=';', quotechar='|')
         for List in items:
-            List
-    return List
+            lines.append(List)
+    return lines
 
 def main():
     FoodGroup = 'Einkauf,Essen,%,'
@@ -17,24 +18,18 @@ def main():
     ClothingGroup = 'Kleidung,Schmuck,%'
     SubHeadings = 'Ort,Betrag,ZA,'
 
-    einkauflist = extractitemsfromknownList('Einkauf.csv')
-    hygieneList = extractitemsfromknownList('KnownHygiene.csv')
-    SpareTimeList = extractitemsfromknownList('KnownSpareTime.csv')
-    CarList = extractitemsfromknownList('KnownCar.csv')
-    TravelingList = extractitemsfromknownList('KnownTraveling.csv')
+    CategoryList = extractitemsfromknownList('InputData/KnownLocations.csv')
+    tBankStatement = extractitemsfromknownList('Umsatzanzeige1.csv')
     RegularCostsList = extractitemsfromknownList('KnownRegularCosts.csv')
-    ClothingList = extractitemsfromknownList('KnownClothing.csv')
     namelist = extractitemsfromknownList('InputData/Names.csv')
 
     open('Parsed.csv', 'w').close()
-    with open('Umsatzanzeige1.csv', newline='') as BankStatementCSV, open ('Parsed.csv', 'w') as ParsedCSV, open('RegluarCosts.csv','w') as regularcostsCSV, open('Income.csv','w') as IncomeCSV, open('RegularSavings.csv','w') as RegularSavings :
+    with open ('Parsed.csv', 'w') as ParsedCSV, open('RegluarCosts.csv','w') as regularcostsCSV, open('Income.csv','w') as IncomeCSV, open('RegularSavings.csv','w') as RegularSavings :
         ParsedCSV.write('Datum,'+ FoodGroup + HygieneGroup + SparetimeGroup + CarGroup + 
         TravelingGroup + MiscellaneousGroup + ClothingGroup +'\n')
 
         ParsedCSV.write('Datum,' + 7*SubHeadings + '\n')
-        tBankStatement = csv.reader(BankStatementCSV, delimiter=';', quotechar='|')
         for row in tBankStatement:
-            # print (row[0]+ "\n")
             row[2] = row[2].replace("\"", "")
             row[2] = row[2].replace(",", ".")
             row[5] = row[5].replace(".", "")
@@ -45,36 +40,36 @@ def main():
                 bHandled = True
             if "BARGELDAUSZAHLUNG" in row[4]:
                 ParsedCSV.write(row[0] + 7*3*"," + ',' + row[2] + ','+ row[5] + "\n")
-            for item in einkauflist:
+            for item in CategoryList[0]:
                 if item in row[2]:
-                    ParsedCSV.write(row[0] + "," + item + ','+ row[5] + "\n")
+                    ParsedCSV.write(row[0] + "," + item + ',' + row[5] + "\n")
                     bHandled = True
-            for item in hygieneList:
+            for item in CategoryList[1]:
                 if item in row[2]:
                     ParsedCSV.write(row[0] + 3 * ',' + "," + item + ','+ row[5] + "\n")
                     bHandled = True
-            for item in SpareTimeList:
+            for item in CategoryList[2]:
                 if item in row[2]:
                     ParsedCSV.write(row[0] + 2*3 * ',' + "," + item + ','+ row[5] + "\n")
                     bHandled = True
-            for item in CarList:
+            for item in CategoryList[3]:
                 if item in row[2]:
                     ParsedCSV.write(row[0] + 3*3* ',' + "," + item + ','+ row[5] + "\n")
                     bHandled = True
-            for item in TravelingList:
+            for item in CategoryList[4]:
                 if item in row[2]:
                     ParsedCSV.write(row[0] + 4*3* ',' + "," + item + ','+ row[5] + "\n")
                     bHandled = True
-            for item in ClothingList:
+            for item in CategoryList[5]:
                 if item in row[2]:
                     ParsedCSV.write(row[0] + 6*3* ',' + "," + item + ','+ row[5] + "\n")
                     bHandled = True
-            for item in RegularCostsList:
+            for item in RegularCostsList[0]:
                 if item in row[2]:
                     regularcostsCSV.write(row[0] + ',' + "," + item + ','+ row[5] + "\n")
                     bHandled = True
             if (bHandled == False):
-                if (namelist[0] in row[2]) or (namelist[1] in row[2]):
+                if (namelist[0][0] in row[2]) or (namelist[0][1] in row[2]):
                     RegularSavings.write(row[0] + ',' + "," + row[2] + ',' + row[5] + "\n")
                 else:
                     if ("AMAZON" in row[2]):
