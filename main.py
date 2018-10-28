@@ -16,17 +16,14 @@ def main():
     MiscellaneousGroup = 'Sonstiges,%,%,'
     ClothingGroup = 'Kleidung,Schmuck,%'
     SubHeadings = 'Ort,Betrag,ZA,'
-    with open ('KnownHygiene.csv') as KnownHygiene:
-        hygieneItems = csv.reader(KnownHygiene, delimiter=';', quotechar='|')
-        for hygieneList in hygieneItems:
-            hygieneList
 
+    einkauflist = extractitemsfromknownList('Einkauf.csv')
+    hygieneList = extractitemsfromknownList('KnownHygiene.csv')
     SpareTimeList = extractitemsfromknownList('KnownSpareTime.csv')
     CarList = extractitemsfromknownList('KnownCar.csv')
     TravelingList = extractitemsfromknownList('KnownTraveling.csv')
     RegularCostsList = extractitemsfromknownList('KnownRegularCosts.csv')
     ClothingList = extractitemsfromknownList('KnownClothing.csv')
-    einkauflist = extractitemsfromknownList('Einkauf.csv')
     namelist = extractitemsfromknownList('InputData/Names.csv')
 
     open('Parsed.csv', 'w').close()
