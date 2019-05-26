@@ -1,5 +1,6 @@
 from BankStatementParser import BankStatementParser
 import glob
+import datetime
 from dateutil import parser
 
 separator = ';'
@@ -27,7 +28,7 @@ def main():
 
 def WriteParsedDebits(CategoryList, IncomeCSV, ParsedCSV, RegularCostsList, RegularSavings, namelist, parser,
                       regularcostsCSV, tBankStatement, barCSV):
-    print("Locations:" + str(CategoryList))
+    #print("Locations:" + str(CategoryList))
 
     for row in tBankStatement:
         bHandled = False
@@ -67,8 +68,10 @@ def writeHeadings(parsedCSV):
 
 
 def DateSort(e):
+    #print("SORT")
     #print(parser.parse(e[1],dayfirst=True))
-    return parser.parse(e[1],dayfirst=True)
+    print(e[0])
+    return e[0]
 
 
 def PrepareBankStatement(parser):

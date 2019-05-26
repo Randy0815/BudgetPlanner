@@ -1,4 +1,5 @@
 import csv
+import datetime
 
 CSVLineOffset = 14
 
@@ -19,6 +20,8 @@ class BankStatementParser:
             for List in items:
                 if items.line_num > CSVLineOffset:
                     lines.append(List)
+                    #print(List[1])
+                    List[0] = datetime.datetime.strptime(List[0], "%d.%m.%Y").date().isoformat()
         return lines
 
 
