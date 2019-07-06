@@ -42,10 +42,15 @@ class BankStatementParser:
         bHandled = False
         for item in parameter_list:
             if item in row[2]:
-                if 'VISA' in row[2]:
-                    row[2].replace('VISA','')
-                    ParsedCSV.write(row[0] + i * ';'*3 + ';' + str(item).capitalize() + ';' + str(row[5]).replace('-','') + ';V' + "\n")
-                else:
-                    ParsedCSV.write(row[0] + i * ';'*3 + ';' + str(item).capitalize() + ';' + str(row[5]).replace('-','') + ';LV'+ "\n")
+                self.write_bank_statement(ParsedCSV, i, item, row)
                 bHandled = True
         return bHandled
+
+    def write_bank_statement(self, ParsedCSV, i, item, row):
+        if 'VISA' in item:
+            item.replace('VISA', '')
+            ParsedCSV.write(
+                row[0] + i * ';' * 3 + ';' + str(item).capitalize() + ';' + str(row[5]).replace('-', '') + ';V' + "\n")
+        else:
+            ParsedCSV.write(
+                row[0] + i * ';' * 3 + ';' + str(item).capitalize() + ';' + str(row[5]).replace('-', '') + ';LV' + "\n")

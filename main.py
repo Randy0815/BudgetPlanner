@@ -51,7 +51,9 @@ def WriteParsedDebits(CategoryList, IncomeCSV, ParsedCSV, RegularCostsList, Regu
             else:
                 if ("AMAZON" in row[2]):
                     row[2] = "AMAZON"
-                ParsedCSV.write(row[0] + 3 * 5 * separator + separator + str(row[2]).capitalize() + separator + str(row[5]).replace('-','') + "\n")
+
+                parser.write_bank_statement(ParsedCSV, 5, row[2], row)
+                #ParsedCSV.write(row[0] + 3 * 5 * separator + separator + str(row[2]).capitalize() + separator + str(row[5]).replace('-','') + "\n")
 
 
 def writeHeadings(parsedCSV):
